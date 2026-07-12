@@ -1,0 +1,18 @@
+.header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: black;
+  height: 4rem;
+}
+
+a {
+  color: white;
+  font-size: var(--font-size-xl);
+  text-decoration: none;
+}
+
+.header a:global(.active) {
+  color: var(--color-primary);
+  font-weight: bold;
+}
