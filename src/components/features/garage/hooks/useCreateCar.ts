@@ -1,5 +1,6 @@
 import { createCarApi } from '@/services/garageApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
 export function useCreateCar() {
   const queryClient = useQueryClient();
@@ -7,14 +8,12 @@ export function useCreateCar() {
   const { mutate: createCar, isPending: isCreating } = useMutation({
     mutationFn: createCarApi,
     onSuccess: () => {
-      //TODO change to toast
-      alert('Car has been successfully created');
+      toast.success('Car has been successfully created');
       queryClient.invalidateQueries({
         queryKey: ['cars'],
       });
     },
-    // //TODO change to toast
-    onError: (err) => alert(err.message),
+    onError: (err) => toast.error(err.message),
   });
 
   return { isCreating, createCar };

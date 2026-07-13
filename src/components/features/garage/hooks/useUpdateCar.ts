@@ -1,6 +1,8 @@
-import { updateCarApi } from '@/services/garageApi';
-import type { CarUpdateParams } from '@/types/car';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+
+import type { CarUpdateParams } from '@/types/car';
+import { updateCarApi } from '@/services/garageApi';
 
 export function useUpdateCar() {
   const queryClient = useQueryClient();
@@ -9,14 +11,12 @@ export function useUpdateCar() {
     mutationFn: ({ id, body }: { id: number; body: CarUpdateParams }) =>
       updateCarApi(id, body),
     onSuccess: () => {
-      //TODO change to toast
-      alert('Car has been successfully updated');
+      toast.success('Car has been successfully updated');
       queryClient.invalidateQueries({
         queryKey: ['cars'],
       });
     },
-    // //TODO change to toast
-    onError: (err) => alert(err.message),
+    onError: (err) => toast.error(err.message),
   });
 
   return { isUpdating, updateCar };
