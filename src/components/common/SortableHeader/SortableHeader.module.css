@@ -1,0 +1,31 @@
+/* SortableHeader.module.css */
+.sortable {
+  cursor: pointer;
+  user-select: none;
+  padding: 1rem 1.5rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.sortable:hover {
+  color: var(--color-primary);
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+}
+
+.arrowActive {
+  color: var(--color-primary);
+  font-size: var(--font-size-lg);
+  line-height: 1;
+}
+
+.arrowInactive {
+  color: var(--color-border);
+  font-size: var(--font-size-lg);
+  line-height: 1;
+}
