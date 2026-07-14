@@ -1,0 +1,25 @@
+.thead th {
+  background-color: var(--color-bg);
+  color: var(--color-text-secondary);
+  padding: var(--space-md) var(--space-lg);
+  font-size: var(--font-size-sm);
+  border-bottom: 3px solid var(--color-primary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  text-align: center;
+}
+
+.thead th:hover {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-primary);
+}
+
+.thead th:first-child {
+  width: 10rem;
+}
+
+.thead th:last-child {
+  width: 20rem;
+}

@@ -2,6 +2,9 @@
   --color-primary: #31c111;
   --color-border: rgb(204, 204, 204);
   --color-text: #111827;
+  --color-text-secondary: #374151;
+  --color-bg: #f8fafc;
+  --color-bg-secondary: #f0fdf4;
 
   --font-base: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -17,6 +20,12 @@
   --border-radius-sm: 5px;
   --border-radius-md: 7px;
   --border-radius-lg: 9px;
+
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
 }
 
 * {
