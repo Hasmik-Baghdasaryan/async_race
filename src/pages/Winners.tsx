@@ -1,5 +1,7 @@
+import WinnerList from '@/components/features/winners/components/WinnerList/WinnerList';
+
 function Winners() {
-  return <h1>Winners page</h1>;
+  return <WinnerList />;
 }
 
 export default Winners;
