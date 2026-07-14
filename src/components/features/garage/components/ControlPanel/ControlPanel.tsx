@@ -8,11 +8,13 @@ import Button from '@/components/common/Button/Button';
 import CarForm from './CarForm/CarForm';
 
 import styles from './ControlPanel.module.css';
+import { useGenerateRandomCars } from '../../hooks/useGenerateRandomCars';
 
 function ControlPanel(): ReactNode {
   const { selectedCar, setSelectedCar } = useSelectedCar();
-  const { createCar } = useCreateCar();
-  const { updateCar } = useUpdateCar();
+  const { createCar, isCreating } = useCreateCar();
+  const { updateCar, isUpdating } = useUpdateCar();
+  const { generateCars, isGenerating } = useGenerateRandomCars();
 
   const handleSubmit = (formData: CarCreateParams) => {
     if (selectedCar) {
@@ -31,14 +33,15 @@ function ControlPanel(): ReactNode {
         key={selectedCar?.id || 'create'}
         value={selectedCar}
         onSubmit={handleSubmit}
+        isLoading={isCreating || isUpdating}
       />
       <Button
         label="Create Cars"
         btnClass="createCarsBtn"
-        onClick={() => {}}
-        isLoading={false}
+        onClick={generateCars}
+        isLoading={isGenerating}
         loadingLabel="Generating..."
-        disabled={false}
+        disabled={isGenerating}
       />
     </div>
   );
