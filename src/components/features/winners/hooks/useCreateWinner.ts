@@ -1,19 +1,19 @@
-import { createCarApi } from '@/services/garageApi';
+import { createWinnerApi } from '@/services/winnersApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
-export function useCreateCar() {
+export function useCreateWinner() {
   const queryClient = useQueryClient();
 
-  const { mutate: createCar, isPending: isCreating } = useMutation({
-    mutationFn: createCarApi,
+  const { mutate: createWinner, isPending: isCreating } = useMutation({
+    mutationFn: createWinnerApi,
     onSuccess: () => {
       toast.success('Car has been successfully created');
       queryClient.invalidateQueries({
-        queryKey: ['cars'],
+        queryKey: ['winners'],
       });
     },
   });
 
-  return { isCreating, createCar };
+  return { isCreating, createWinner };
 }

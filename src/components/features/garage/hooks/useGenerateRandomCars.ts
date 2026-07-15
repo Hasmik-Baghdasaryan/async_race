@@ -12,7 +12,6 @@ export function useGenerateRandomCars() {
       toast.success('Cars have been successfully created');
       queryClient.invalidateQueries({ queryKey: ['cars'] });
     },
-    onError: (err) => toast.error(err.message),
   });
 
   return { generateCars, isGenerating };

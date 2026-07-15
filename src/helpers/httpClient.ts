@@ -1,13 +1,35 @@
 import { API_BASE_URL } from '@/constants/constants';
 
+const HTTP_STATUS = {
+  INTERNAL_SERVER_ERROR: 500,
+} as const;
+
+export class HttpError extends Error {
+  status: number;
+  userMessage: string;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.name = 'HttpError';
+    this.status = status;
+    this.userMessage = HttpError.toUserMessage(status);
+  }
+
+  private static toUserMessage(status: number): string {
+    if (status >= HTTP_STATUS.INTERNAL_SERVER_ERROR)
+      return 'Server error. Please try again.';
+    return 'Failed. Please try again.';
+  }
+}
+
 interface FetchOptionsBase {
   endpoint: string;
   headers?: Record<string, string>;
-  body?: unknown;
+  signal?: AbortSignal;
 }
 
 interface FetchOptionsWithoutBody extends FetchOptionsBase {
-  method?: 'GET' | 'DELETE';
+  method?: 'GET' | 'DELETE' | 'PATCH';
   body?: never;
 }
 
@@ -21,9 +43,10 @@ type FetchOptions = FetchOptionsWithoutBody | FetchOptionsWithBody;
 async function makeRequest<T>(
   options: FetchOptions,
 ): Promise<{ data: T; headers: Headers }> {
-  const { endpoint, method = 'GET', body, headers = {} } = options;
+  const { endpoint, method = 'GET', headers = {}, signal } = options;
+  const body = 'body' in options ? options.body : undefined;
 
-  const requestOptions: RequestInit = { method };
+  const requestOptions: RequestInit = { method, signal };
 
   if (body !== undefined) {
     requestOptions.headers = { 'Content-Type': 'application/json', ...headers };
@@ -43,7 +66,10 @@ async function makeRequest<T>(
     : ((await response.text()) as T);
 
   if (!response.ok) {
-    throw new Error(`HTTP ${response.status}: ${endpoint}`);
+    throw new HttpError(
+      `HTTP ${response.status}: ${endpoint}`,
+      response.status,
+    );
   }
 
   return { data, headers: response.headers };

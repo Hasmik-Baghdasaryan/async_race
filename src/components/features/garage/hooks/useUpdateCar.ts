@@ -16,7 +16,6 @@ export function useUpdateCar() {
         queryKey: ['cars'],
       });
     },
-    onError: (err) => toast.error(err.message),
   });
 
   return { isUpdating, updateCar };

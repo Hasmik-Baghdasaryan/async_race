@@ -13,7 +13,6 @@ export function useDeleteCar() {
         queryKey: ['cars'],
       });
     },
-    onError: (err) => toast.error(err.message),
   });
 
   return { isDeleting, deleteCar };
