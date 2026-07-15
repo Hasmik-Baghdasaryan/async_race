@@ -1,6 +1,6 @@
-import { deleteCarApi } from '@/services/garageApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
+import { deleteCarApi } from '../api/garageApi';
 
 export function useDeleteCar() {
   const queryClient = useQueryClient();

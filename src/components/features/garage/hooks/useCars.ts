@@ -1,9 +1,9 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router';
 
-import { getAllCarsApi } from '@/services/garageApi';
 import { CARS_PER_PAGE } from '@/constants/constants';
 import { usePagination } from '@/hooks/usePagination';
+import { getAllCarsApi } from '../api/garageApi';
 
 export function useCars() {
   const [searchParams] = useSearchParams();

@@ -2,8 +2,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
 import type { CarUpdateParams } from '@/types/car';
-import { updateCarApi } from '@/services/garageApi';
+
 import { useSelectedCar } from '../context/SelectedCarContext';
+import { updateCarApi } from '../api/garageApi';
 
 export function useUpdateCar() {
   const queryClient = useQueryClient();

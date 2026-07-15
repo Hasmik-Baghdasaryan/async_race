@@ -1,13 +1,13 @@
+import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router';
 import {
   WINNERS_PER_PAGE,
   WINNERS_SORT_DEFAULT,
   WINNERS_SORT_ORDER_DEFAULT,
 } from '@/constants/constants';
 import { useSort } from '@/hooks/useSort';
-import { getAllWinnersApi } from '@/services/winnersApi';
 import type { SortTypes } from '@/types/winner';
-import { useQuery } from '@tanstack/react-query';
-import { useSearchParams } from 'react-router';
+import { getAllWinnersApi } from '../api/winnersApi';
 
 export function useWinners() {
   const [searchParams] = useSearchParams();

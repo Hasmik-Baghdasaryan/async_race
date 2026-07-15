@@ -1,13 +1,14 @@
 import { WINNERS_PER_PAGE } from '@/constants/constants';
 
 import { fetchData, fetchWithHeaders } from '@/helpers/httpClient';
+
 import type {
   FetchWinnersParams,
   FetchWinnersResponse,
   UpdateWinnerParams,
   Winner,
 } from '@/types/winner';
-import { getCarApi } from './garageApi';
+import { getCarApi } from '../../garage/api/garageApi';
 
 export function getAllWinnersApi({
   page,
