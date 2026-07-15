@@ -3,9 +3,11 @@ import toast from 'react-hot-toast';
 
 import type { CarUpdateParams } from '@/types/car';
 import { updateCarApi } from '@/services/garageApi';
+import { useSelectedCar } from '../context/SelectedCarContext';
 
 export function useUpdateCar() {
   const queryClient = useQueryClient();
+  const { unSelectCar } = useSelectedCar();
 
   const { mutate: updateCar, isPending: isUpdating } = useMutation({
     mutationFn: ({ id, body }: { id: number; body: CarUpdateParams }) =>
@@ -15,6 +17,7 @@ export function useUpdateCar() {
       queryClient.invalidateQueries({
         queryKey: ['cars'],
       });
+      unSelectCar();
     },
   });
 
