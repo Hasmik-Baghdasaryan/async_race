@@ -14,7 +14,7 @@ interface CarItemControlPanelProps {
 }
 
 function CarItemControlPanel({ car }: CarItemControlPanelProps): ReactNode {
-  const { setSelectedCar } = useSelectedCar();
+  const { selectedCar, selectCar, unSelectCar } = useSelectedCar();
   const { deleteCar } = useDeleteCar();
 
   return (
@@ -22,8 +22,8 @@ function CarItemControlPanel({ car }: CarItemControlPanelProps): ReactNode {
       <div className={styles.btnContainer}>
         <Button
           btnClass="carTrackBtn"
-          onClick={() => setSelectedCar(car)}
-          label="Select"
+          onClick={() => (selectedCar ? unSelectCar() : selectCar(car))}
+          label={selectedCar ? 'Unselect' : 'Select'}
         />
         <Button
           btnClass="removeBtn"

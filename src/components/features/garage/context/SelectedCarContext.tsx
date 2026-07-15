@@ -3,7 +3,8 @@ import type { Car } from '@/types/car';
 
 interface SelectedCarContextValue {
   selectedCar: Car | null;
-  setSelectedCar: (car: Car | null) => void;
+  selectCar: (car: Car) => void;
+  unSelectCar: () => void;
 }
 
 const SelectedCarContext = createContext<SelectedCarContextValue | undefined>(
@@ -12,8 +13,19 @@ const SelectedCarContext = createContext<SelectedCarContextValue | undefined>(
 
 function SelectedCarProvider({ children }: { children: ReactNode }) {
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
+
+  function selectCar(car: Car) {
+    setSelectedCar(car);
+  }
+
+  function unSelectCar() {
+    setSelectedCar(null);
+  }
+
   return (
-    <SelectedCarContext.Provider value={{ selectedCar, setSelectedCar }}>
+    <SelectedCarContext.Provider
+      value={{ selectedCar, selectCar, unSelectCar }}
+    >
       {children}
     </SelectedCarContext.Provider>
   );
