@@ -1,6 +1,6 @@
 import { API_BASE_URL } from '@/constants/constants';
 
-const HTTP_STATUS = {
+export const HTTP_STATUS = {
   INTERNAL_SERVER_ERROR: 500,
 } as const;
 
@@ -60,10 +60,14 @@ async function makeRequest<T>(
     requestOptions,
   );
 
-  const contentType = response.headers.get('content-type');
-  const data = contentType?.includes('application/json')
-    ? ((await response.json()) as T)
-    : ((await response.text()) as T);
+  const rawText = await response.text();
+
+  let data: T;
+  try {
+    data = rawText ? (JSON.parse(rawText) as T) : (rawText as T);
+  } catch {
+    data = rawText as T;
+  }
 
   if (!response.ok) {
     throw new HttpError(

@@ -21,7 +21,7 @@ function Button({
   onClick,
   disabled = false,
   isLoading = false,
-  loadingLabel = 'Loading...',
+  loadingLabel = '',
 }: ButtonProps): ReactNode {
   return (
     <button

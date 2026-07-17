@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import raceReducer from '@/store/slices/raceSlice';
+import engineReducer from '@/components/features/garage/engine/engineSlice';
 
 const store = configureStore({
   reducer: {
-    race: raceReducer,
+    engine: engineReducer,
   },
 });
 

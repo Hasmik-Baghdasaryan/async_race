@@ -1,5 +1,5 @@
-import { createCarApi } from '@/services/garageApi';
 import type { CarCreateParams } from '@/types/car';
+import { createCarApi } from '../api/garageApi';
 
 const carModelsByBrand: Record<string, string[]> = {
   Tesla: ['Model S', 'Model 3', 'Model X', 'Model Y'],
