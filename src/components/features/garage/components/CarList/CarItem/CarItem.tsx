@@ -1,12 +1,12 @@
 import { useRef } from 'react';
-import type { Car } from '@/types/car';
 import { useSelectedCar } from '@/components/features/garage/context/SelectedCarContext';
 
 import CarTrack from './CarTrack/CarTrack';
 import CarItemControlPanel from './CarItemControlPanel/CarItemControlPanel';
+import { useCarEngine } from '../../../race/hooks/useCarEngine';
 
+import type { Car } from '@/types/car';
 import styles from './CarItem.module.css';
-import { useCarEngine } from '../../../engine/useCarEngine';
 
 interface CarItemProps {
   car: Car;

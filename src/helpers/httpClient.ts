@@ -1,6 +1,7 @@
 import { API_BASE_URL } from '@/constants/constants';
 
 export const HTTP_STATUS = {
+  NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
 } as const;
 

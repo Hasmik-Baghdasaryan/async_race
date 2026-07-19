@@ -9,3 +9,5 @@ export const WINNERS_SORT_ORDER_DEFAULT = 'ASC';
 // Engine/Race constants
 export const RESET_ANIMATION_DURATION_MS = 500;
 export const CAR_CENTER_OFFSET_RATIO = 0.5;
+export const MS_PER_SECOND = 1000;
+export const TIME_PRECISION = 2;

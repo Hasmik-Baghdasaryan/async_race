@@ -1,16 +1,23 @@
 import { useCars } from '@/components/features/garage/hooks/useCars';
+import { useAppSelector } from '@/store/hooks';
+import { selectWinnerCarId } from '@/components/features/garage/race/raceSlice';
+import { useRaceNavigationReset } from '@/components/features/garage/race/hooks/useRaceNavigationReset';
+import { CARS_PER_PAGE } from '@/constants/constants';
+
 import Empty from '@/components/common/Empty/Empty';
 import Error from '@/components/common/Error/Error';
 import Loader from '@/components/common/Loader/Loader';
 import Pagination from '@/components/common/Pagination/Pagination';
 import CarItem from './CarItem/CarItem';
-
-import { CARS_PER_PAGE } from '@/constants/constants';
+import WinnerModal from '@/components/features/garage/components/WinnerModal/WinnerModal';
 
 import styles from './CarList.module.css';
 
 function CarList() {
   const { isLoading, cars, error, totalCount = 0 } = useCars();
+  const winnerCarId = useAppSelector(selectWinnerCarId);
+  const winnerCar = cars?.find((car) => car.id === winnerCarId);
+  useRaceNavigationReset(cars?.map((car) => car.id) ?? []);
 
   if (isLoading) return <Loader />;
   if (error) return <Error message={error.message} />;
@@ -18,6 +25,7 @@ function CarList() {
 
   return (
     <>
+      {winnerCar && <WinnerModal car={winnerCar} />}
       <div className={styles.carsWrapper}>
         {cars.map((car) => (
           <CarItem car={car} key={car.id} />

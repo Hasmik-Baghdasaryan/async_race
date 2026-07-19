@@ -1,5 +1,8 @@
 import CarIcon from '@/components/common/CarIcon/CarIcon';
-import { WINNERS_PER_PAGE } from '@/constants/constants';
+import {
+  WINNERS_PER_PAGE,
+  TIME_PRECISION,
+} from '@/constants/constants';
 import type { Winner } from '@/types/winner';
 
 import styles from './WinnerRow.module.css';
@@ -21,7 +24,11 @@ function WinnerRow({ winner, index, page }: WinnerRowProps) {
       </td>
       <td className={styles.column}>{winner.name}</td>
       <td className={styles.column}>{winner.wins}</td>
-      <td className={styles.column}>{winner.time}</td>
+      <td className={styles.column}>
+        {Number.isFinite(winner.time)
+          ? winner.time.toFixed(TIME_PRECISION)
+          : '—'}
+      </td>
     </tr>
   );
 }

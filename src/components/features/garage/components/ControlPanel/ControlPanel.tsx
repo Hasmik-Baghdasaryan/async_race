@@ -3,12 +3,13 @@ import type { CarCreateParams } from '@/types/car';
 import { useSelectedCar } from '@/components/features/garage/context/SelectedCarContext';
 import { useCreateCar } from '@/components/features/garage/hooks/useCreateCar';
 import { useUpdateCar } from '@/components/features/garage/hooks/useUpdateCar';
+import { useGenerateRandomCars } from '../../hooks/useGenerateRandomCars';
 
 import Button from '@/components/common/Button/Button';
 import CarForm from './CarForm/CarForm';
+import RaceControl from './RaceControl/RaceControl';
 
 import styles from './ControlPanel.module.css';
-import { useGenerateRandomCars } from '../../hooks/useGenerateRandomCars';
 
 function ControlPanel(): ReactNode {
   const { selectedCar, unSelectCar } = useSelectedCar();
@@ -29,6 +30,7 @@ function ControlPanel(): ReactNode {
 
   return (
     <div className={styles.controlPanel}>
+      <RaceControl />
       <CarForm
         key={selectedCar?.id || 'create'}
         value={selectedCar}
