@@ -7,25 +7,37 @@ import {
   raceReset,
   selectIsRaceActive,
 } from '@/components/features/garage/race/raceSlice';
+import { useRaceRegistry } from '@/components/features/garage/race/context/RaceRegistryContext';
 
 import styles from './RaceControl.module.css';
 
 function RaceControl(): ReactNode {
   const dispatch = useAppDispatch();
   const isRaceActive = useAppSelector(selectIsRaceActive);
+  const { startAll, stopAll } = useRaceRegistry();
+
+  const handleRace = () => {
+    dispatch(raceStarted());
+    startAll();
+  };
+
+  const handleReset = () => {
+    dispatch(raceReset());
+    stopAll();
+  };
 
   return (
     <div className={styles.raceControlContainer}>
       <Button
         label="Race"
         btnClass="raceBtn"
-        onClick={() => dispatch(raceStarted())}
+        onClick={handleRace}
         disabled={isRaceActive}
       />
       <Button
         label="Reset"
         btnClass="resetBtn"
-        onClick={() => dispatch(raceReset())}
+        onClick={handleReset}
         disabled={!isRaceActive}
       />
     </div>

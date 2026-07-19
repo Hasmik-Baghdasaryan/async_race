@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { useAppSelector } from '@/store/hooks';
 import { selectCarEngine } from '@/components/features/garage/engine/engineSlice';
-import { useRecordRaceWinner } from '@/components/features/garage/race/hooks/useRecordRaceWinner';
 import { MS_PER_SECOND, TIME_PRECISION } from '@/constants/constants';
 
 import type { Car } from '@/types/car';
@@ -14,17 +13,8 @@ interface WinnerModalProps {
 
 function WinnerModal({ car }: WinnerModalProps): ReactNode {
   const engine = useAppSelector((state) => selectCarEngine(state, car.id));
-  const { recordWinner } = useRecordRaceWinner();
   const time = engine.distance / engine.velocity / MS_PER_SECOND;
-  const hasRecordedRef = useRef(false);
   const [isClosed, setIsClosed] = useState(false);
-
-  useEffect(() => {
-    if (hasRecordedRef.current || !Number.isFinite(time)) return;
-    hasRecordedRef.current = true;
-    recordWinner({ carId: car.id, time });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [car.id]);
 
   if (isClosed) return null;
 

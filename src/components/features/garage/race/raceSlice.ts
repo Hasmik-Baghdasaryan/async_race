@@ -2,14 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import { driveEngine } from '../engine/engineSlice';
 
 interface RaceState {
-  raceTrigger: number;
-  resetTrigger: number;
+  isRaceActive: boolean;
   winnerCarId: number | null;
 }
 
 const initialState: RaceState = {
-  raceTrigger: 0,
-  resetTrigger: 0,
+  isRaceActive: false,
   winnerCarId: null,
 };
 
@@ -18,38 +16,29 @@ const raceSlice = createSlice({
   initialState,
   reducers: {
     raceStarted(state) {
-      state.raceTrigger += 1;
+      state.isRaceActive = true;
       state.winnerCarId = null;
     },
     raceReset(state) {
-      state.resetTrigger += 1;
+      state.isRaceActive = false;
       state.winnerCarId = null;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(driveEngine.fulfilled, (state, action) => {
-      const isRaceActive = state.raceTrigger > state.resetTrigger;
-      if (isRaceActive && state.winnerCarId === null) {
+      if (state.isRaceActive && state.winnerCarId === null) {
         state.winnerCarId = action.payload;
       }
     });
   },
   selectors: {
-    selectIsRaceActive: (state): boolean =>
-      state.raceTrigger > state.resetTrigger,
+    selectIsRaceActive: (state): boolean => state.isRaceActive,
     selectWinnerCarId: (state): number | null => state.winnerCarId,
-    selectRaceTrigger: (state): number => state.raceTrigger,
-    selectResetTrigger: (state): number => state.resetTrigger,
   },
 });
 
 export const { raceStarted, raceReset } = raceSlice.actions;
 
-export const {
-  selectIsRaceActive,
-  selectWinnerCarId,
-  selectRaceTrigger,
-  selectResetTrigger,
-} = raceSlice.selectors;
+export const { selectIsRaceActive, selectWinnerCarId } = raceSlice.selectors;
 
 export default raceSlice.reducer;

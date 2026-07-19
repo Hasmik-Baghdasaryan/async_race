@@ -5,7 +5,7 @@ import { useAnimationResize, type BaseMeasurements } from '../animation';
 import { runRace } from '../runRace';
 import { stopCar } from '../stopCar';
 import { useCleanupEffect } from './useCleanupEffect';
-import { useRaceSignals } from './useRaceSignals';
+import { useRaceRegistration } from './useRaceRegistration';
 import type { Car } from '@/types/car';
 
 interface UseCarEngineProps {
@@ -54,7 +54,8 @@ export function useCarEngine({
     animationRef,
     dispatch,
   });
-  useRaceSignals({ handleStart, handleStop });
+
+  useRaceRegistration({ carId: car.id, handleStart, handleStop });
 
   return { handleStart, handleStop, status: engine.status };
 }
