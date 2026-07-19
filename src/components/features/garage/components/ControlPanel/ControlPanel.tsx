@@ -11,7 +11,7 @@ import styles from './ControlPanel.module.css';
 import { useGenerateRandomCars } from '../../hooks/useGenerateRandomCars';
 
 function ControlPanel(): ReactNode {
-  const { selectedCar, setSelectedCar } = useSelectedCar();
+  const { selectedCar, unSelectCar } = useSelectedCar();
   const { createCar, isCreating } = useCreateCar();
   const { updateCar, isUpdating } = useUpdateCar();
   const { generateCars, isGenerating } = useGenerateRandomCars();
@@ -20,7 +20,7 @@ function ControlPanel(): ReactNode {
     if (selectedCar) {
       updateCar(
         { id: selectedCar.id, body: formData },
-        { onSuccess: () => setSelectedCar(null) },
+        { onSuccess: () => unSelectCar() },
       );
     } else {
       createCar(formData);

@@ -1,6 +1,5 @@
 import { useEffect, type RefObject } from 'react';
-
-const CAR_CENTER_OFFSET_RATIO = 0.5;
+import { CAR_CENTER_OFFSET_RATIO } from '@/constants/constants';
 
 export interface BuildAnimation {
   animation: Animation;

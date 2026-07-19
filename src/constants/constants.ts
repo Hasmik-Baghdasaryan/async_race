@@ -5,3 +5,7 @@ export const GENERATE_CARS_COUNT = 100;
 export const WINNERS_PER_PAGE = 10;
 export const WINNERS_SORT_DEFAULT = 'time';
 export const WINNERS_SORT_ORDER_DEFAULT = 'ASC';
+
+// Engine/Race constants
+export const RESET_ANIMATION_DURATION_MS = 500;
+export const CAR_CENTER_OFFSET_RATIO = 0.5;

@@ -3,16 +3,29 @@ import type { EngineStatus } from '@/types/engine';
 import { useCarButtonStates } from '../useCarButtonStates';
 
 import styles from './StartStopButtons.module.css';
+import { useAppSelector } from '@/store/hooks';
+import { selectCarEngine } from '@/components/features/garage/engine/engineSlice';
 
 interface StartStopButtonsProps {
   start: () => void;
   stop: () => void;
   status: EngineStatus;
+  carId: number;
 }
 
-function StartStopButtons({ start, stop, status }: StartStopButtonsProps) {
+function StartStopButtons({
+  start,
+  stop,
+  status,
+  carId,
+}: StartStopButtonsProps) {
   const { startDisabled, stopEnabled, stopLabel, isStarting } =
     useCarButtonStates(status);
+
+  const { isResetting } = useAppSelector((state) =>
+    selectCarEngine(state, carId),
+  );
+
   return (
     <div className={styles.btnContainer}>
       <Button
@@ -27,6 +40,7 @@ function StartStopButtons({ start, stop, status }: StartStopButtonsProps) {
         onClick={stop}
         label={stopLabel}
         disabled={!stopEnabled}
+        isLoading={isResetting}
       />
     </div>
   );

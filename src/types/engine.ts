@@ -9,3 +9,8 @@ export interface EngineResponse {
 export interface DriveResponse {
   success: boolean;
 }
+
+export type DriveEngineRejection = {
+  carId: number;
+  reason: 'aborted' | 'broken' | 'error';
+};

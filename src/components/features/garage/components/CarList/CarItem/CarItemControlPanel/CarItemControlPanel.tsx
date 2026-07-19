@@ -24,7 +24,12 @@ function CarItemControlPanel({
   return (
     <div className={styles.controlPanel}>
       <SelectRemoveButtons car={car} status={status} />
-      <StartStopButtons start={start} stop={stop} status={status} />
+      <StartStopButtons
+        start={start}
+        stop={stop}
+        status={status}
+        carId={car.id}
+      />
     </div>
   );
 }

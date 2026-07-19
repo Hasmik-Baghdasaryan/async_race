@@ -1,25 +1,20 @@
 import { useEffect, useRef, type RefObject } from 'react';
-import toast from 'react-hot-toast';
-
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import type { AppDispatch } from '@/store/store';
 import type { Car } from '@/types/car';
-import type { EngineStatus } from '@/types/engine';
-import { HTTP_STATUS, HttpError } from '@/helpers/httpClient';
+import { RESET_ANIMATION_DURATION_MS } from '@/constants/constants';
 import {
   buildAnimation,
   useAnimationResize,
   type BaseMeasurements,
 } from './animation';
-import { driveEngineApi, startEngineApi, stopEngineApi } from './engineApi';
 import {
-  engineBroken,
-  engineFinished,
-  engineStarted,
-  engineStarting,
-  engineStopped,
+  startEngine,
+  driveEngine,
+  stopEngine,
   selectCarEngine,
 } from './engineSlice';
+import type { DriveEngineRejection } from '@/types/engine';
 
 interface UseCarEngineProps {
   car: Car;
@@ -33,17 +28,15 @@ export function useCarEngine({
   finishLineRef,
 }: UseCarEngineProps) {
   const dispatch = useAppDispatch();
-  const status = useAppSelector(
-    (state) => selectCarEngine(state, car.id).status,
-  );
+  const engine = useAppSelector((state) => selectCarEngine(state, car.id));
   const animationRef = useRef<Animation | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
   const baseMeasurementsRef = useRef<BaseMeasurements>(null);
 
-  function handleStart() {
-    void startEngine(
+  const handleStart = () => {
+    if (engine.status === 'starting' || engine.status === 'driving') return;
+    void startRace(
       car.id,
-      status,
       carRef,
       finishLineRef,
       animationRef,
@@ -51,75 +44,44 @@ export function useCarEngine({
       baseMeasurementsRef,
       dispatch,
     );
-  }
+  };
 
-  function handleStop() {
-    void stopEngine(car.id, animationRef, abortControllerRef, dispatch);
-  }
+  const handleStop = () => {
+    void stopCar(car.id, abortControllerRef, animationRef, carRef, dispatch);
+  };
 
   useAnimationResize(finishLineRef, animationRef, baseMeasurementsRef);
 
   useEffect(() => {
     return () => {
-      abortControllerRef.current?.abort(); // eslint-disable-line react-hooks/exhaustive-deps
-      animationRef.current?.cancel(); // eslint-disable-line react-hooks/exhaustive-deps
-      dispatch(engineStopped(car.id));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      const abortController = abortControllerRef.current;
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      const animation = animationRef.current;
+      abortController?.abort();
+      animation?.cancel();
+      if (abortController) {
+        void dispatch(stopEngine(car.id));
+      }
     };
   }, [car.id, dispatch]);
 
-  return { handleStart, handleStop, status };
+  return { handleStart, handleStop, status: engine.status };
 }
 
-async function driveCar(
+async function startRace(
   carId: number,
-  animationRef: RefObject<Animation | null>,
-  abortControllerRef: RefObject<AbortController | null>,
-  dispatch: AppDispatch,
-) {
-  const controller = new AbortController();
-  abortControllerRef.current = controller;
-
-  try {
-    await driveEngineApi(carId, controller.signal);
-    if (abortControllerRef.current !== controller) return;
-    dispatch(engineFinished(carId));
-  } catch (err) {
-    if (abortControllerRef.current !== controller) return;
-    if (
-      err instanceof HttpError &&
-      err.status === HTTP_STATUS.INTERNAL_SERVER_ERROR
-    ) {
-      animationRef.current?.pause();
-      dispatch(engineBroken(carId));
-    } else if (err instanceof DOMException && err.name === 'AbortError') {
-      //no need to do anything
-    } else {
-      animationRef.current?.pause();
-      dispatch(engineBroken(carId));
-      toast.error('Something went wrong!');
-    }
-  }
-}
-
-async function startEngine(
-  carId: number,
-  status: EngineStatus,
   carRef: RefObject<HTMLDivElement | null>,
   finishLineRef: RefObject<HTMLDivElement | null>,
   animationRef: RefObject<Animation | null>,
   abortControllerRef: RefObject<AbortController | null>,
   baseMeasurementsRef: RefObject<BaseMeasurements>,
   dispatch: AppDispatch,
-) {
-  if (status === 'starting' || status === 'driving') return;
-
-  dispatch(engineStarting(carId));
-
+): Promise<void> {
   try {
-    const { velocity, distance } = await startEngineApi(carId);
-    dispatch(engineStarted({ carId, velocity, distance }));
+    const { velocity, distance } = await dispatch(startEngine(carId)).unwrap();
 
-    if (carRef.current == null || finishLineRef.current == null) return;
+    if (!carRef.current || !finishLineRef.current) return;
 
     const { animation, baseLeft, baseWidth } = buildAnimation(
       carRef.current,
@@ -130,23 +92,48 @@ async function startEngine(
     animationRef.current = animation;
     baseMeasurementsRef.current = { left: baseLeft, width: baseWidth };
 
-    void driveCar(carId, animationRef, abortControllerRef, dispatch);
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
+    try {
+      await dispatch(
+        driveEngine({ carId, signal: controller.signal }),
+      ).unwrap();
+    } catch (err) {
+      const error = err as DriveEngineRejection;
+      if (error.reason === 'broken' || error.reason === 'error') {
+        animationRef.current?.pause();
+      }
+    }
   } catch {
-    dispatch(engineStopped(carId));
-    toast.error('Something went wrong!');
+    return;
   }
 }
 
-function stopEngine(
+async function stopCar(
   carId: number,
-  animationRef: RefObject<Animation | null>,
   abortControllerRef: RefObject<AbortController | null>,
+  animationRef: RefObject<Animation | null>,
+  carRef: RefObject<HTMLDivElement | null>,
   dispatch: AppDispatch,
-) {
+): Promise<void> {
   abortControllerRef.current?.abort();
   abortControllerRef.current = null;
-  animationRef.current?.cancel();
+  animationRef.current?.pause();
 
-  dispatch(engineStopped(carId));
-  void stopEngineApi(carId);
+  await dispatch(stopEngine(carId));
+
+  if (carRef.current && animationRef.current) {
+    const currentTransform = carRef.current.style.transform;
+
+    animationRef.current.effect = new KeyframeEffect(
+      carRef.current,
+      [
+        { transform: currentTransform || 'translateX(0px)' },
+        { transform: 'translateX(0px)' },
+      ],
+      { duration: RESET_ANIMATION_DURATION_MS },
+    );
+    animationRef.current.play();
+  }
 }
