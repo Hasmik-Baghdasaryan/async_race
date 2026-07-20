@@ -30,6 +30,7 @@ export function useCarEngine({
     if (engine.status === 'starting' || engine.status === 'driving') return;
     runRace({
       carId: car.id,
+      carName: car.name,
       dispatch,
       refs: { carRef, finishLineRef, animationRef, abortControllerRef },
     });

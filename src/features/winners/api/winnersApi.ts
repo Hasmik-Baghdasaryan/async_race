@@ -26,8 +26,12 @@ export function getAllWinnersApi({
   }).then(async ({ data, headers }) => {
     const winnersWithCars = await Promise.all(
       data.map(async (winner) => {
-        const car = await getCarApi(winner.id);
-        return { ...winner, name: car.name, color: car.color };
+        try {
+          const car = await getCarApi(winner.id);
+          return { ...winner, name: car.name, color: car.color };
+        } catch {
+          return winner;
+        }
       }),
     );
     return {

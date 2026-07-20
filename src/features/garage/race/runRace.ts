@@ -1,13 +1,18 @@
 import type { RefObject } from 'react';
+import toast from 'react-hot-toast';
 
 import type { DriveEngineRejection } from '@/features/garage/types';
+import { getErrorMessage } from '@/lib/httpClient';
 import type { AppDispatch } from '@/store/store';
 
 import { driveEngine, startEngine } from '../engine/engineSlice';
 import { buildAnimation } from './animation';
 
+const CAR_START_ERROR_TOAST_ID = 'car-start-error';
+
 interface RunRaceProps {
   carId: number;
+  carName: string;
   dispatch: AppDispatch;
   refs: {
     carRef: RefObject<HTMLDivElement | null>;
@@ -17,7 +22,12 @@ interface RunRaceProps {
   };
 }
 
-export async function runRace({ refs, dispatch, carId }: RunRaceProps) {
+export async function runRace({
+  refs,
+  dispatch,
+  carId,
+  carName,
+}: RunRaceProps) {
   const { carRef, finishLineRef, animationRef, abortControllerRef } = refs;
 
   try {
@@ -46,7 +56,9 @@ export async function runRace({ refs, dispatch, carId }: RunRaceProps) {
         animationRef.current?.pause();
       }
     }
-  } catch {
-    return;
+  } catch (err) {
+    toast.error(`${carName}: ${getErrorMessage(err)}`, {
+      id: CAR_START_ERROR_TOAST_ID,
+    });
   }
 }

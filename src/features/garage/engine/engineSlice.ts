@@ -112,20 +112,20 @@ const engineSlice = createSlice({
         state.cars[action.meta.arg] = { ...initialCarEngineState };
       })
       .addCase(driveEngine.fulfilled, (state, action) => {
-        const carId = action.payload;
-        state.cars[carId].status = 'finished';
+        const car = state.cars[action.payload];
+        if (car) car.status = 'finished';
       })
       .addCase(driveEngine.rejected, (state, action) => {
         if (!action.payload) return;
         const { carId, reason } = action.payload;
-        if (reason === 'broken' || reason === 'error') {
-          state.cars[carId].status = 'broken';
+        const car = state.cars[carId];
+        if (car && (reason === 'broken' || reason === 'error')) {
+          car.status = 'broken';
         }
       })
       .addCase(stopEngine.pending, (state, action) => {
-        if (state.cars[action.meta.arg]) {
-          state.cars[action.meta.arg].isResetting = true;
-        }
+        const car = state.cars[action.meta.arg];
+        if (car) car.isResetting = true;
       })
       .addCase(stopEngine.fulfilled, (state, action) => {
         state.cars[action.payload] = { ...initialCarEngineState };
