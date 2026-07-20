@@ -1,6 +1,7 @@
 import { API_BASE_URL } from '@/constants/constants';
 
 export const HTTP_STATUS = {
+  NETWORK_ERROR: 0,
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
 } as const;
@@ -17,10 +18,18 @@ export class HttpError extends Error {
   }
 
   private static toUserMessage(status: number): string {
+    if (status === HTTP_STATUS.NETWORK_ERROR)
+      return 'Unable to reach the server. Please check your connection and try again.';
     if (status >= HTTP_STATUS.INTERNAL_SERVER_ERROR)
       return 'Server error. Please try again.';
     return 'Failed. Please try again.';
   }
+}
+
+export function getErrorMessage(error: unknown): string {
+  return error instanceof HttpError
+    ? error.userMessage
+    : 'Something went wrong. Please try again.';
 }
 
 interface FetchOptionsBase {
@@ -56,10 +65,16 @@ async function makeRequest<T>(
     requestOptions.headers = headers;
   }
 
-  const response = await fetch(
-    `${API_BASE_URL}/${endpoint.replace(/^\//, '')}`,
-    requestOptions,
-  );
+  let response: Response;
+  try {
+    response = await fetch(
+      `${API_BASE_URL}/${endpoint.replace(/^\//, '')}`,
+      requestOptions,
+    );
+  } catch (err) {
+    if (err instanceof Error && err.name === 'AbortError') throw err;
+    throw new HttpError('Network request failed', HTTP_STATUS.NETWORK_ERROR);
+  }
 
   const rawText = await response.text();
 

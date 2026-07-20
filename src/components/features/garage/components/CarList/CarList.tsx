@@ -3,6 +3,7 @@ import { useAppSelector } from '@/store/hooks';
 import { selectWinnerCarId } from '@/components/features/garage/race/raceSlice';
 import { useRaceNavigationReset } from '@/components/features/garage/race/hooks/useRaceNavigationReset';
 import { CARS_PER_PAGE } from '@/constants/constants';
+import { getErrorMessage } from '@/helpers/httpClient';
 
 import Empty from '@/components/common/Empty/Empty';
 import Error from '@/components/common/Error/Error';
@@ -20,7 +21,7 @@ function CarList() {
   useRaceNavigationReset(cars?.map((car) => car.id) ?? []);
 
   if (isLoading) return <Loader />;
-  if (error) return <Error message={error.message} />;
+  if (error) return <Error message={getErrorMessage(error)} />;
   if (!cars || !cars.length) return <Empty name="cars" />;
 
   return (

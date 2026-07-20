@@ -1,6 +1,7 @@
 import { WINNERS_PER_PAGE } from '@/constants/constants';
 import { usePagination } from '@/hooks/usePagination';
 import { useWinners } from '../../hooks/useWinners';
+import { getErrorMessage } from '@/helpers/httpClient';
 
 import Pagination from '@/components/common/Pagination/Pagination';
 import WinnerHeader from './WinnerHeader/WinnerHeader';
@@ -19,7 +20,7 @@ function WinnerList() {
   });
 
   if (isLoading) return <Loader />;
-  if (error) return <Error message={error.message} />;
+  if (error) return <Error message={getErrorMessage(error)} />;
   if (!winners || !winners.length) return <Empty name="winners" />;
 
   return (
