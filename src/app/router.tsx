@@ -1,9 +1,9 @@
 import { createBrowserRouter, type RouteObject } from 'react-router';
 
 import App from '@/app/App';
-import Garage from '@/pages/Garage';
-import NotFoundPage from '@/pages/NotFoundPage';
-import Winners from '@/pages/Winners';
+import Garage from '@/app/routes/Garage';
+import NotFoundPage from '@/app/routes/NotFoundPage';
+import Winners from '@/app/routes/Winners';
 
 const router: RouteObject[] = [
   {
