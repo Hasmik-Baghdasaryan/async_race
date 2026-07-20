@@ -10,7 +10,7 @@ import {
 import { useDeleteCar } from '@/components/features/garage/hooks/useDeleteCar';
 import { useCarButtonStates } from '../useCarButtonStates';
 
-import Button from '@/components/common/Button/Button';
+import Button from '@/components/Button/Button';
 
 import styles from './SelectRemoveButtons.module.css';
 

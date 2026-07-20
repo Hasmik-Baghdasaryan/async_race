@@ -3,7 +3,7 @@ import { useAppSelector } from '@/store/hooks';
 import { selectIsRaceActive } from '@/components/features/garage/race/raceSlice';
 import { selectIsAnyCarRacing } from '@/components/features/garage/engine/engineSlice';
 
-import Button from '@/components/common/Button/Button';
+import Button from '@/components/Button/Button';
 import { useGenerateRandomCars } from './useGenerateRandomCars';
 
 import styles from './GenerateRandomCars.module.css';

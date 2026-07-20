@@ -1,4 +1,4 @@
-import Button from '@/components/common/Button/Button';
+import Button from '@/components/Button/Button';
 import type { EngineStatus } from '@/types/engine';
 import { useCarButtonStates } from '../useCarButtonStates';
 

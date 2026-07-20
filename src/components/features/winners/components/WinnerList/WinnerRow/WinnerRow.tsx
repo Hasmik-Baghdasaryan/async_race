@@ -1,4 +1,4 @@
-import CarIcon from '@/components/common/CarIcon/CarIcon';
+import CarIcon from '@/components/CarIcon/CarIcon';
 import { WINNERS_PER_PAGE, TIME_PRECISION } from '@/constants/constants';
 import type { Winner } from '@/types/winner';
 

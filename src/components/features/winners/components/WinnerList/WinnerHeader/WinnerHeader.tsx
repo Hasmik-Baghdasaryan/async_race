@@ -1,4 +1,4 @@
-import SortableHeader from '@/components/common/SortableHeader/SortableHeader';
+import SortableHeader from '@/components/SortableHeader/SortableHeader';
 import styles from './WinnerHeader.module.css';
 import { useSort } from '@/hooks/useSort';
 import type { SortTypes } from '@/types/winner';

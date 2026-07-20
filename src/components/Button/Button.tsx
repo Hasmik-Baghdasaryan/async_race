@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import Loader from '@/components/common/Loader/Loader';
+import Loader from '@/components/Loader/Loader';
 
 import styles from './Button.module.css';
 

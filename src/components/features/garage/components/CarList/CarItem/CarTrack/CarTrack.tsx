@@ -1,7 +1,7 @@
 import { type ReactNode, type Ref } from 'react';
 import type { Car } from '@/types/car';
 
-import CarIcon from '@/components/common/CarIcon/CarIcon';
+import CarIcon from '@/components/CarIcon/CarIcon';
 
 import styles from './CarTrack.module.css';
 

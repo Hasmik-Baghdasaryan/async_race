@@ -5,10 +5,10 @@ import { useRaceNavigationReset } from '@/components/features/garage/race/hooks/
 import { CARS_PER_PAGE } from '@/constants/constants';
 import { getErrorMessage } from '@/helpers/httpClient';
 
-import Empty from '@/components/common/Empty/Empty';
-import Error from '@/components/common/Error/Error';
-import Loader from '@/components/common/Loader/Loader';
-import Pagination from '@/components/common/Pagination/Pagination';
+import Empty from '@/components/Empty/Empty';
+import Error from '@/components/Error/Error';
+import Loader from '@/components/Loader/Loader';
+import Pagination from '@/components/Pagination/Pagination';
 import CarItem from './CarItem/CarItem';
 import WinnerModal from '@/components/features/garage/components/WinnerModal/WinnerModal';
 

@@ -3,12 +3,12 @@ import { usePagination } from '@/hooks/usePagination';
 import { useWinners } from '../../hooks/useWinners';
 import { getErrorMessage } from '@/helpers/httpClient';
 
-import Pagination from '@/components/common/Pagination/Pagination';
+import Pagination from '@/components/Pagination/Pagination';
 import WinnerHeader from './WinnerHeader/WinnerHeader';
 import WinnerRow from './WinnerRow/WinnerRow';
-import Loader from '@/components/common/Loader/Loader';
-import Error from '@/components/common/Error/Error';
-import Empty from '@/components/common/Empty/Empty';
+import Loader from '@/components/Loader/Loader';
+import Error from '@/components/Error/Error';
+import Empty from '@/components/Empty/Empty';
 
 import styles from './WinnerList.module.css';
 

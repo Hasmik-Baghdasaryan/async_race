@@ -3,8 +3,8 @@ import type { Car, CarCreateParams } from '@/types/car';
 import { CAR_NAME_MAX_LENGTH } from '@/constants/constants';
 import { useCarFormLogic } from './useCarFormLogic';
 
-import Button from '@/components/common/Button/Button';
-import Error from '@/components/common/Error/Error';
+import Button from '@/components/Button/Button';
+import Error from '@/components/Error/Error';
 
 import styles from './CarFrom.module.css';
 

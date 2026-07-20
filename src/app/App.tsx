@@ -2,7 +2,7 @@ import { Outlet } from 'react-router';
 
 import Header from '@/components/layouts/Header/Header';
 import Main from '@/components/layouts/Main/Main';
-import Toast from '@/components/common/Toast/Toast';
+import Toast from '@/components/Toast/Toast';
 
 function App() {
   return (

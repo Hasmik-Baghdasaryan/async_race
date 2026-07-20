@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import Button from '@/components/common/Button/Button';
+import Button from '@/components/Button/Button';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
   raceStarted,
