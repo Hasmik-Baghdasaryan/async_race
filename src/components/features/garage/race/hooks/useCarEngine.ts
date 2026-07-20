@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { useRef, type RefObject } from 'react';
 import { selectCarEngine } from '../../engine/engineSlice';
-import { useAnimationResize, type BaseMeasurements } from '../animation';
+import { useAnimationResize } from '../animation';
 import { runRace } from '../runRace';
 import { stopCar } from '../stopCar';
 import { useCleanupEffect } from './useCleanupEffect';
@@ -23,20 +23,13 @@ export function useCarEngine({
   const engine = useAppSelector((state) => selectCarEngine(state, car.id));
   const animationRef = useRef<Animation | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
-  const baseMeasurementsRef = useRef<BaseMeasurements>(null);
 
   const handleStart = () => {
     if (engine.status === 'starting' || engine.status === 'driving') return;
     runRace({
       carId: car.id,
       dispatch,
-      refs: {
-        carRef,
-        finishLineRef,
-        animationRef,
-        abortControllerRef,
-        baseMeasurementsRef,
-      },
+      refs: { carRef, finishLineRef, animationRef, abortControllerRef },
     });
   };
 
@@ -47,7 +40,7 @@ export function useCarEngine({
       refs: { abortControllerRef, animationRef, carRef },
     });
 
-  useAnimationResize(finishLineRef, animationRef, baseMeasurementsRef);
+  useAnimationResize(carRef, finishLineRef, animationRef);
   useCleanupEffect({
     carId: car.id,
     abortControllerRef,

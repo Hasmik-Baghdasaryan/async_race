@@ -3,11 +3,22 @@ import { CAR_CENTER_OFFSET_RATIO } from '@/constants/constants';
 
 export interface BuildAnimation {
   animation: Animation;
-  baseLeft: number;
-  baseWidth: number;
 }
 
-export type BaseMeasurements = { left: number; width: number } | null;
+function calculateDistancePx(
+  carEl: HTMLDivElement,
+  finishLineEl: HTMLDivElement,
+): number {
+  const trackRect = carEl.parentElement?.getBoundingClientRect();
+  const carRect = carEl.getBoundingClientRect();
+  const finishRect = finishLineEl.getBoundingClientRect();
+
+  return (
+    finishRect.left -
+    (trackRect?.left ?? carRect.left) +
+    carRect.width * CAR_CENTER_OFFSET_RATIO
+  );
+}
 
 export function buildAnimation(
   carEl: HTMLDivElement,
@@ -16,11 +27,7 @@ export function buildAnimation(
   distance: number,
 ): BuildAnimation {
   const duration = distance / velocity;
-  const carRect = carEl.getBoundingClientRect();
-  const finishRect = finishLineEl.getBoundingClientRect();
-
-  const distancePx =
-    finishRect.left - carRect.left + carRect.width * CAR_CENTER_OFFSET_RATIO;
+  const distancePx = calculateDistancePx(carEl, finishLineEl);
 
   const animation = carEl.animate(
     [
@@ -30,28 +37,23 @@ export function buildAnimation(
     { duration, easing: 'linear', fill: 'forwards' },
   );
 
-  return { animation, baseLeft: carRect.left, baseWidth: carRect.width };
+  return { animation };
 }
 
 function recalculateAnimationTarget(
+  carRef: RefObject<HTMLDivElement | null>,
   finishLineRef: RefObject<HTMLDivElement | null>,
   animationRef: RefObject<Animation | null>,
-  baseMeasurementsRef: RefObject<BaseMeasurements>,
 ) {
   if (
+    carRef.current == null ||
     finishLineRef.current == null ||
-    animationRef.current == null ||
-    baseMeasurementsRef.current == null
+    animationRef.current == null
   )
     return;
 
-  const finishRect = finishLineRef.current.getBoundingClientRect();
-  const distancePx =
-    finishRect.left -
-    baseMeasurementsRef.current.left +
-    baseMeasurementsRef.current.width * CAR_CENTER_OFFSET_RATIO;
-
-  const effect = animationRef.current?.effect;
+  const distancePx = calculateDistancePx(carRef.current, finishLineRef.current);
+  const effect = animationRef.current.effect;
 
   if (effect instanceof KeyframeEffect) {
     effect.setKeyframes([
@@ -62,17 +64,13 @@ function recalculateAnimationTarget(
 }
 
 export function useAnimationResize(
+  carRef: RefObject<HTMLDivElement | null>,
   finishLineRef: RefObject<HTMLDivElement | null>,
   animationRef: RefObject<Animation | null>,
-  baseMeasurementsRef: RefObject<BaseMeasurements>,
 ) {
   useEffect(() => {
     function handleResize() {
-      recalculateAnimationTarget(
-        finishLineRef,
-        animationRef,
-        baseMeasurementsRef,
-      );
+      recalculateAnimationTarget(carRef, finishLineRef, animationRef);
     }
 
     window.addEventListener('resize', handleResize);
@@ -80,5 +78,5 @@ export function useAnimationResize(
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [finishLineRef, animationRef, baseMeasurementsRef]);
+  }, [carRef, finishLineRef, animationRef]);
 }
