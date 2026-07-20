@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import type { ReactNode } from 'react';
 import type { Car, CarCreateParams } from '@/types/car';
+import { CAR_NAME_MAX_LENGTH } from '@/constants/constants';
 
 import Button from '@/components/common/Button/Button';
 import Error from '@/components/common/Error/Error';
@@ -13,13 +14,25 @@ interface CarFormProps {
   isLoading?: boolean;
 }
 
+const nameValidation = {
+  required: 'Car name is required',
+  maxLength: {
+    value: CAR_NAME_MAX_LENGTH,
+    message: `Car name must be under ${CAR_NAME_MAX_LENGTH} characters`,
+  },
+};
+const colorValidation = { required: 'Color is required' };
+
+function useCarForm(value?: Car | null) {
+  const defaultValues = {
+    name: value?.name ?? '',
+    color: value?.color ?? '#000000',
+  };
+  return useForm({ mode: 'onChange', defaultValues });
+}
+
 function CarForm({ onSubmit, value, isLoading }: CarFormProps): ReactNode {
-  const { register, handleSubmit, formState, reset } = useForm({
-    defaultValues: {
-      name: value?.name ?? '',
-      color: value?.color ?? '#000000',
-    },
-  });
+  const { register, handleSubmit, formState, reset } = useCarForm(value);
 
   const { errors, isValid } = formState;
 
@@ -30,20 +43,24 @@ function CarForm({ onSubmit, value, isLoading }: CarFormProps): ReactNode {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onFormSubmit)}>
-      <input
-        type="text"
-        className={styles.carName}
-        placeholder="Type Car Brand"
-        {...register('name', { required: 'Car name is required' })}
-      />
-      {errors.name?.message && <Error message={errors.name?.message} />}
+      <div className={styles.field}>
+        <input
+          type="text"
+          className={styles.carName}
+          placeholder="Type Car Brand"
+          {...register('name', nameValidation)}
+        />
+        {errors.name?.message && <Error message={errors.name?.message} />}
+      </div>
 
-      <input
-        type="color"
-        className={styles.colorPicker}
-        {...register('color', { required: 'Color is required' })}
-      />
-      {errors.color?.message && <Error message={errors.color?.message} />}
+      <div className={styles.field}>
+        <input
+          type="color"
+          className={styles.colorPicker}
+          {...register('color', colorValidation)}
+        />
+        {errors.color?.message && <Error message={errors.color?.message} />}
+      </div>
       <Button
         label={value ? 'Update' : 'Create'}
         type="submit"

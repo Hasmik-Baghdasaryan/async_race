@@ -23,7 +23,12 @@
   outline: none;
 }
 
-.error {
-  font-size: 1rem;
-  color: darkred;
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.field span {
+  font-size: 0.7rem;
 }

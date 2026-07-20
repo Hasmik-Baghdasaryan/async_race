@@ -10,6 +10,7 @@
   padding: 0.2rem;
   max-width: 10rem;
   text-align: center;
+  overflow-wrap: break-word;
 }
 
 .selected {
