@@ -6,11 +6,10 @@ import { selectIsAnyCarRacing } from '@/components/features/garage/engine/engine
 import { useSelectedCar } from '@/components/features/garage/context/SelectedCarContext';
 import { useCreateCar } from '@/components/features/garage/hooks/useCreateCar';
 import { useUpdateCar } from '@/components/features/garage/hooks/useUpdateCar';
-import { useGenerateRandomCars } from '../../hooks/useGenerateRandomCars';
 
-import Button from '@/components/common/Button/Button';
 import CarForm from './CarForm/CarForm';
 import RaceControl from './RaceControl/RaceControl';
+import GenerateRandomCars from './GenerateRandomCars/GenerateRandomCars';
 
 import styles from './ControlPanel.module.css';
 
@@ -18,7 +17,6 @@ function ControlPanel(): ReactNode {
   const { selectedCar, unSelectCar } = useSelectedCar();
   const { createCar, isCreating } = useCreateCar();
   const { updateCar, isUpdating } = useUpdateCar();
-  const { generateCars, isGenerating } = useGenerateRandomCars();
   const isRaceActive = useAppSelector(selectIsRaceActive);
   const isAnyCarRacing = useAppSelector(selectIsAnyCarRacing);
   const blockCarActions = isRaceActive || isAnyCarRacing;
@@ -44,14 +42,7 @@ function ControlPanel(): ReactNode {
         isLoading={isCreating || isUpdating}
         disabled={blockCarActions}
       />
-      <Button
-        label="Create Cars"
-        btnClass="createCarsBtn"
-        onClick={generateCars}
-        isLoading={isGenerating}
-        loadingLabel="Generating..."
-        disabled={isGenerating || blockCarActions}
-      />
+      <GenerateRandomCars />
     </div>
   );
 }

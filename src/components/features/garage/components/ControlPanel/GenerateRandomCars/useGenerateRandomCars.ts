@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { generateRandomCars } from '../helpers/generateRandomCars';
+import { generateRandomCars } from './randomCarGenerator';
 import { GENERATE_CARS_COUNT } from '@/constants/constants';
 import toast from 'react-hot-toast';
 
