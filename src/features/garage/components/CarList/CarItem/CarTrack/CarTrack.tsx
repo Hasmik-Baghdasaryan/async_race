@@ -18,7 +18,7 @@ function CarTrack({ car, carRef, finishLineRef }: CarTrackProps): ReactNode {
         <span className={`${styles.lineText} ${styles.startText}`}>START</span>
       </div>
       <div className={styles.car} ref={carRef}>
-        <CarIcon color={car.color} />
+        <CarIcon color={car.color} width="46" height="46" />
       </div>
       <div className={styles.finishLine} ref={finishLineRef}>
         <span className={`${styles.lineText} ${styles.finishText}`}>

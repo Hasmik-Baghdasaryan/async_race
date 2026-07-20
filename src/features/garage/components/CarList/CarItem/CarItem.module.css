@@ -7,8 +7,9 @@
 }
 
 .title {
-  padding: 0.2rem;
+  padding: 0.1rem;
   max-width: 10rem;
+  font-size: 0.9rem;
   text-align: center;
   overflow-wrap: break-word;
 }

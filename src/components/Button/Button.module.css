@@ -25,14 +25,14 @@
 
 .carTrackBtn {
   min-width: 3rem;
-  height: 1.3rem;
+  height: 1.1rem;
   font-size: var(--font-size-xs);
 }
 
 .stopBtn,
 .removeBtn {
   min-width: 3rem;
-  height: 1.3rem;
+  height: 1.1rem;
   font-size: var(--font-size-xs);
   background-color: darkred;
 }
