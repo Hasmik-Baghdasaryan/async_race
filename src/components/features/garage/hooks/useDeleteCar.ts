@@ -4,6 +4,8 @@ import { HTTP_STATUS, HttpError } from '@/helpers/httpClient';
 import { deleteWinnerApi } from '@/components/features/winners/api/winnersApi';
 import { deleteCarApi } from '../api/garageApi';
 
+const CAR_DELETE_TOAST_ID = 'car-delete';
+
 async function deleteCarAndWinner(id: number) {
   await deleteCarApi(id);
   try {
@@ -19,9 +21,12 @@ export function useDeleteCar() {
   const queryClient = useQueryClient();
 
   const { mutate: deleteCar, isPending: isDeleting } = useMutation({
-    mutationFn: (id: number) => deleteCarAndWinner(id),
-    onSuccess: () => {
-      toast.success('Car has been successfully removed');
+    mutationFn: ({ id }: { id: number; name: string }) =>
+      deleteCarAndWinner(id),
+    onSuccess: (_data, { name }) => {
+      toast.success(`${name} has been successfully removed`, {
+        id: CAR_DELETE_TOAST_ID,
+      });
       queryClient.invalidateQueries({ queryKey: ['cars'] });
       queryClient.invalidateQueries({ queryKey: ['winners'] });
     },

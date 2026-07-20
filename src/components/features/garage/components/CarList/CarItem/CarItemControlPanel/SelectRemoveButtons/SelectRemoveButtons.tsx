@@ -40,7 +40,7 @@ function SelectRemoveButtons({ car, status }: SelectRemoveButtonsProps) {
       />
       <Button
         btnClass="removeBtn"
-        onClick={() => deleteCar(car.id)}
+        onClick={() => deleteCar({ id: car.id, name: car.name })}
         label="Remove"
         disabled={isRacing}
       />
