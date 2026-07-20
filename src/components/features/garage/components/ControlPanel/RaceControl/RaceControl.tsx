@@ -8,6 +8,7 @@ import {
   selectIsRaceActive,
 } from '@/components/features/garage/race/raceSlice';
 import { useRaceRegistry } from '@/components/features/garage/race/context/RaceRegistryContext';
+import { useCars } from '@/components/features/garage/hooks/useCars';
 
 import styles from './RaceControl.module.css';
 
@@ -15,6 +16,9 @@ function RaceControl(): ReactNode {
   const dispatch = useAppDispatch();
   const isRaceActive = useAppSelector(selectIsRaceActive);
   const { startAll, stopAll } = useRaceRegistry();
+  const { totalCount } = useCars();
+
+  if (totalCount === 0) return null;
 
   const handleRace = () => {
     dispatch(raceStarted());
