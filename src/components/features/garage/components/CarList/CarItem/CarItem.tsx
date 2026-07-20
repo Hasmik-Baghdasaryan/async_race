@@ -1,5 +1,6 @@
 import { useRef } from 'react';
-import { useSelectedCar } from '@/components/features/garage/context/SelectedCarContext';
+import { useAppSelector } from '@/store/hooks';
+import { getSelectedCar } from '@/components/features/garage/selectedCarSlice';
 
 import CarTrack from './CarTrack/CarTrack';
 import CarItemControlPanel from './CarItemControlPanel/CarItemControlPanel';
@@ -20,7 +21,7 @@ function CarItem({ car }: CarItemProps) {
     carRef,
     finishLineRef,
   });
-  const { selectedCar } = useSelectedCar();
+  const selectedCar = useAppSelector(getSelectedCar);
 
   return (
     <div className={selectedCar?.id === car.id ? styles.selected : ''}>

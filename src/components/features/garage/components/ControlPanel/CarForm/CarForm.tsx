@@ -1,14 +1,14 @@
-import { useForm } from 'react-hook-form';
 import type { ReactNode } from 'react';
 import type { Car, CarCreateParams } from '@/types/car';
 import { CAR_NAME_MAX_LENGTH } from '@/constants/constants';
+import { useCarFormLogic } from './useCarFormLogic';
 
 import Button from '@/components/common/Button/Button';
 import Error from '@/components/common/Error/Error';
 
 import styles from './CarFrom.module.css';
 
-interface CarFormProps {
+export interface CarFormProps {
   value?: Car | null;
   onSubmit: (params: CarCreateParams) => void;
   isLoading?: boolean;
@@ -24,27 +24,13 @@ const nameValidation = {
 };
 const colorValidation = { required: 'Color is required' };
 
-function useCarForm(value?: Car | null) {
-  const defaultValues = {
-    name: value?.name ?? '',
-    color: value?.color ?? '#000000',
-  };
-  return useForm({ mode: 'onChange', defaultValues });
-}
-
 function CarForm(props: CarFormProps): ReactNode {
-  const { onSubmit, value, isLoading, disabled } = props;
-  const { register, handleSubmit, formState, reset } = useCarForm(value);
-
+  const { value, isLoading, disabled } = props;
+  const { register, formState, submitHandler } = useCarFormLogic(props);
   const { errors, isValid } = formState;
 
-  const onFormSubmit = (data: CarCreateParams) => {
-    onSubmit(data);
-    reset();
-  };
-
   return (
-    <form className={styles.form} onSubmit={handleSubmit(onFormSubmit)}>
+    <form className={styles.form} onSubmit={submitHandler}>
       <div className={styles.field}>
         <input
           type="text"

@@ -1,9 +1,12 @@
 import { type ReactNode } from 'react';
 import type { CarCreateParams } from '@/types/car';
-import { useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { selectIsRaceActive } from '@/components/features/garage/race/raceSlice';
 import { selectIsAnyCarRacing } from '@/components/features/garage/engine/engineSlice';
-import { useSelectedCar } from '@/components/features/garage/context/SelectedCarContext';
+import {
+  unSelectCar,
+  getSelectedCar,
+} from '@/components/features/garage/selectedCarSlice';
 import { useCreateCar } from '@/components/features/garage/hooks/useCreateCar';
 import { useUpdateCar } from '@/components/features/garage/hooks/useUpdateCar';
 
@@ -14,7 +17,8 @@ import GenerateRandomCars from './GenerateRandomCars/GenerateRandomCars';
 import styles from './ControlPanel.module.css';
 
 function ControlPanel(): ReactNode {
-  const { selectedCar, unSelectCar } = useSelectedCar();
+  const dispatch = useAppDispatch();
+  const selectedCar = useAppSelector(getSelectedCar);
   const { createCar, isCreating } = useCreateCar();
   const { updateCar, isUpdating } = useUpdateCar();
   const isRaceActive = useAppSelector(selectIsRaceActive);
@@ -25,7 +29,7 @@ function ControlPanel(): ReactNode {
     if (selectedCar) {
       updateCar(
         { id: selectedCar.id, body: formData },
-        { onSuccess: () => unSelectCar() },
+        { onSuccess: () => dispatch(unSelectCar()) },
       );
     } else {
       createCar(formData);

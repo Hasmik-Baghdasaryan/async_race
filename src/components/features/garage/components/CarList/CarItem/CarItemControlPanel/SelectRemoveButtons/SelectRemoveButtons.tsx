@@ -1,7 +1,12 @@
 import type { EngineStatus } from '@/types/engine';
 import type { Car } from '@/types/car';
 
-import { useSelectedCar } from '@/components/features/garage/context/SelectedCarContext';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import {
+  selectCar,
+  unSelectCar,
+  getSelectedCar,
+} from '@/components/features/garage/selectedCarSlice';
 import { useDeleteCar } from '@/components/features/garage/hooks/useDeleteCar';
 import { useCarButtonStates } from '../useCarButtonStates';
 
@@ -16,12 +21,13 @@ interface SelectRemoveButtonsProps {
 
 function SelectRemoveButtons({ car, status }: SelectRemoveButtonsProps) {
   const { isRacing } = useCarButtonStates(status);
-  const { selectedCar, selectCar, unSelectCar } = useSelectedCar();
+  const dispatch = useAppDispatch();
+  const selectedCar = useAppSelector(getSelectedCar);
   const { deleteCar } = useDeleteCar();
 
   const isSelected = selectedCar?.id === car.id;
   const handleSelectToggle = () =>
-    isSelected ? unSelectCar() : selectCar(car);
+    dispatch(isSelected ? unSelectCar() : selectCar(car));
   const selectLabel = isSelected ? 'Unselect' : 'Select';
 
   return (
