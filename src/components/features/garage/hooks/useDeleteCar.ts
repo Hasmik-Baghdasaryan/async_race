@@ -9,7 +9,8 @@ async function deleteCarAndWinner(id: number) {
   try {
     await deleteWinnerApi(id);
   } catch (err) {
-    if (err instanceof HttpError && err.status === HTTP_STATUS.NOT_FOUND) return;
+    if (err instanceof HttpError && err.status === HTTP_STATUS.NOT_FOUND)
+      return;
     throw err;
   }
 }

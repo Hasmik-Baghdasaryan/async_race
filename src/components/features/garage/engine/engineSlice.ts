@@ -129,11 +129,15 @@ const engineSlice = createSlice({
   selectors: {
     selectCarEngine: (state, carId: number): CarEngineState =>
       state.cars[carId] ?? initialCarEngineState,
+    selectIsAnyCarRacing: (state): boolean =>
+      Object.values(state.cars).some(
+        (car) => car.status === 'starting' || car.status === 'driving',
+      ),
   },
 });
 
 export const { engineRemoved } = engineSlice.actions;
 
-export const { selectCarEngine } = engineSlice.selectors;
+export const { selectCarEngine, selectIsAnyCarRacing } = engineSlice.selectors;
 
 export default engineSlice.reducer;

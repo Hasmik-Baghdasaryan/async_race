@@ -1,5 +1,8 @@
 import { type ReactNode } from 'react';
 import type { CarCreateParams } from '@/types/car';
+import { useAppSelector } from '@/store/hooks';
+import { selectIsRaceActive } from '@/components/features/garage/race/raceSlice';
+import { selectIsAnyCarRacing } from '@/components/features/garage/engine/engineSlice';
 import { useSelectedCar } from '@/components/features/garage/context/SelectedCarContext';
 import { useCreateCar } from '@/components/features/garage/hooks/useCreateCar';
 import { useUpdateCar } from '@/components/features/garage/hooks/useUpdateCar';
@@ -16,6 +19,9 @@ function ControlPanel(): ReactNode {
   const { createCar, isCreating } = useCreateCar();
   const { updateCar, isUpdating } = useUpdateCar();
   const { generateCars, isGenerating } = useGenerateRandomCars();
+  const isRaceActive = useAppSelector(selectIsRaceActive);
+  const isAnyCarRacing = useAppSelector(selectIsAnyCarRacing);
+  const blockCarActions = isRaceActive || isAnyCarRacing;
 
   const handleSubmit = (formData: CarCreateParams) => {
     if (selectedCar) {
@@ -36,6 +42,7 @@ function ControlPanel(): ReactNode {
         value={selectedCar}
         onSubmit={handleSubmit}
         isLoading={isCreating || isUpdating}
+        disabled={blockCarActions}
       />
       <Button
         label="Create Cars"
@@ -43,7 +50,7 @@ function ControlPanel(): ReactNode {
         onClick={generateCars}
         isLoading={isGenerating}
         loadingLabel="Generating..."
-        disabled={isGenerating}
+        disabled={isGenerating || blockCarActions}
       />
     </div>
   );

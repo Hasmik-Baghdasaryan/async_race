@@ -12,6 +12,7 @@ interface CarFormProps {
   value?: Car | null;
   onSubmit: (params: CarCreateParams) => void;
   isLoading?: boolean;
+  disabled?: boolean;
 }
 
 const nameValidation = {
@@ -31,7 +32,8 @@ function useCarForm(value?: Car | null) {
   return useForm({ mode: 'onChange', defaultValues });
 }
 
-function CarForm({ onSubmit, value, isLoading }: CarFormProps): ReactNode {
+function CarForm(props: CarFormProps): ReactNode {
+  const { onSubmit, value, isLoading, disabled } = props;
   const { register, handleSubmit, formState, reset } = useCarForm(value);
 
   const { errors, isValid } = formState;
@@ -64,7 +66,7 @@ function CarForm({ onSubmit, value, isLoading }: CarFormProps): ReactNode {
       <Button
         label={value ? 'Update' : 'Create'}
         type="submit"
-        disabled={!isValid}
+        disabled={!isValid || disabled}
         isLoading={isLoading}
         loadingLabel={value ? 'Updating...' : 'Creating...'}
       />
