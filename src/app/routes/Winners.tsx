@@ -1,4 +1,4 @@
-import WinnerList from '@/components/features/winners/components/WinnerList/WinnerList';
+import { WinnerList } from '@/features/winners';
 
 function Winners() {
   return <WinnerList />;

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+
 import styles from './Empty.module.css';
 
 interface EmptyProps {

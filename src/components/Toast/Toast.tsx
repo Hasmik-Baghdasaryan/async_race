@@ -1,6 +1,6 @@
+import type { ReactNode } from 'react';
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
-import type { ReactNode } from 'react';
 
 function Toast(): ReactNode {
   return (

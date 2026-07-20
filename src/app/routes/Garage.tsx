@@ -1,6 +1,4 @@
-import { RaceRegistryProvider } from '@/components/features/garage/race/context/RaceRegistryContext';
-import CarList from '@/components/features/garage/components/CarList/CarList';
-import ControlPanel from '@/components/features/garage/components/ControlPanel/ControlPanel';
+import { CarList, ControlPanel, RaceRegistryProvider } from '@/features/garage';
 
 function Garage() {
   return (

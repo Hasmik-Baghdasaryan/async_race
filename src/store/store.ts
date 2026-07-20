@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import engineReducer from '@/components/features/garage/engine/engineSlice';
-import raceReducer from '@/components/features/garage/race/raceSlice';
-import carFormReducer from '@/components/features/garage/carFormSlice';
-import selectedCarReducer from '@/components/features/garage/selectedCarSlice';
-import { raceListenerMiddleware } from '@/components/features/garage/race/raceListeners';
+import engineReducer from '@/features/garage/engine/engineSlice';
+import raceReducer from '@/features/garage/race/raceSlice';
+import carFormReducer from '@/features/garage/slices/carFormSlice';
+import selectedCarReducer from '@/features/garage/slices/selectedCarSlice';
+import { raceListenerMiddleware } from '@/store/listeners/raceWinnerListener';
 
 const store = configureStore({
   reducer: {

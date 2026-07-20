@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { type ReactNode, useState } from 'react';
 import { NavLink, useLocation } from 'react-router';
 
 import styles from './Header.module.css';
