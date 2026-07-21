@@ -16,9 +16,9 @@ function RaceControl(): ReactNode {
   const dispatch = useAppDispatch();
   const isRaceActive = useAppSelector(selectIsRaceActive);
   const { startAll, stopAll } = useRaceRegistry();
-  const { totalCount } = useCars();
+  const { totalCount, error } = useCars();
 
-  if (totalCount === 0) return null;
+  if (totalCount === 0 || error) return null;
 
   const handleRace = () => {
     dispatch(raceStarted());
