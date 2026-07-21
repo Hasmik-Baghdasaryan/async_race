@@ -3,7 +3,6 @@ import { type ReactNode } from 'react';
 import { selectIsAnyCarRacing } from '@/features/garage/engine/engineSlice';
 import { useCreateCar } from '@/features/garage/hooks/useCreateCar';
 import { useUpdateCar } from '@/features/garage/hooks/useUpdateCar';
-import { selectIsRaceActive } from '@/features/garage/race/raceSlice';
 import {
   getSelectedCar,
   unSelectCar,
@@ -21,9 +20,7 @@ function ControlPanel(): ReactNode {
   const selectedCar = useAppSelector(getSelectedCar);
   const { createCar, isCreating } = useCreateCar();
   const { updateCar, isUpdating } = useUpdateCar();
-  const isRaceActive = useAppSelector(selectIsRaceActive);
-  const isAnyCarRacing = useAppSelector(selectIsAnyCarRacing);
-  const blockCarActions = isRaceActive || isAnyCarRacing;
+  const blockCarActions = useAppSelector(selectIsAnyCarRacing);
 
   const handleSubmit = (formData: CarCreateParams) => {
     if (selectedCar) {
