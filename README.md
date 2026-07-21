@@ -6,7 +6,7 @@
 
 ## Deployed solution
 
-🔗 _Not yet deployed — link to be added here._
+🔗 https://async-race-hasmik.vercel.app/
 
 ## Checklist
 
