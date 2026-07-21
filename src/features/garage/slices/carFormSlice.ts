@@ -1,5 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
+import { selectCar } from './selectedCarSlice';
+
 interface CarFormValues {
   name: string;
   color: string;
@@ -29,6 +31,11 @@ const carFormSlice = createSlice({
       const { carId, ...values } = action.payload;
       state.editDrafts[carId] = values;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(selectCar, (state) => {
+      state.createDraft = { name: '', color: '#000000' };
+    });
   },
   selectors: {
     selectCarFormValues: (state): CarFormValues => state.createDraft,

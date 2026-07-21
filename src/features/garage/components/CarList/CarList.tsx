@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import Empty from '@/components/Empty/Empty';
 import Error from '@/components/Error/Error';
 import Loader from '@/components/Loader/Loader';
@@ -7,17 +9,30 @@ import { CARS_PER_PAGE } from '@/features/garage/constants';
 import { useCars } from '@/features/garage/hooks/useCars';
 import { useRaceNavigationReset } from '@/features/garage/race/hooks/useRaceNavigationReset';
 import { selectWinnerCarId } from '@/features/garage/race/raceSlice';
+import {
+  getSelectedCar,
+  unSelectCar,
+} from '@/features/garage/slices/selectedCarSlice';
 import { getErrorMessage } from '@/lib/httpClient';
-import { useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 import CarItem from './CarItem/CarItem';
 import styles from './CarList.module.css';
 
 function CarList() {
   const { isLoading, cars, error, totalCount = 0 } = useCars();
+  const dispatch = useAppDispatch();
   const winnerCarId = useAppSelector(selectWinnerCarId);
+  const selectedCar = useAppSelector(getSelectedCar);
   const winnerCar = cars?.find((car) => car.id === winnerCarId);
   useRaceNavigationReset(cars?.map((car) => car.id) ?? []);
+
+  useEffect(() => {
+    if (!cars || !selectedCar) return;
+    if (!cars.some((car) => car.id === selectedCar.id)) {
+      dispatch(unSelectCar());
+    }
+  }, [cars, selectedCar, dispatch]);
 
   if (isLoading) return <Loader />;
   if (error) return <Error message={getErrorMessage(error)} />;
