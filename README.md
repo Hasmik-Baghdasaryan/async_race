@@ -59,7 +59,10 @@
 ### Prettier and ESLint (10 pts)
 
 - [x] Prettier Setup (5 points): Prettier is correctly set up with two scripts in package.json: format for auto-formatting and ci:format for checking issues.
-- [ ] ESLint Configuration (5 points): not supported with ESLint 10.
+- [ ] ESLint Configuration (5 points):
+  - [ ] ESLint is configured with the Airbnb style guide — not supported with ESLint 10
+  - [x] A lint script in package.json runs ESLint checks
+  - [x] Configuration files reflect strict TypeScript settings as per tsconfig.json
 
 ### Overall Code Quality (100 points) — skipped during self-check
 
