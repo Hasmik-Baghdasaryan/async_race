@@ -1,6 +1,7 @@
 .row {
   border-bottom: 1px solid var(--color-bg);
   transition: background-color 0.15s;
+  height: 2rem;
 }
 
 .row:hover {
@@ -8,7 +9,7 @@
 }
 
 .column {
-  padding: 1rem 1.5rem;
+  padding: 0.3rem 1.5rem;
   vertical-align: middle;
   color: var(--color-text-secondary);
   text-align: center;
