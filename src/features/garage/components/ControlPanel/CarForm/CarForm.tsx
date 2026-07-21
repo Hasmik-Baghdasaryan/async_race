@@ -30,33 +30,35 @@ function CarForm(props: CarFormProps): ReactNode {
   const { errors, isValid } = formState;
 
   return (
-    <form className={styles.form} onSubmit={submitHandler}>
-      <div className={styles.field}>
-        <input
-          type="text"
-          className={styles.carName}
-          placeholder="Type Car Brand"
-          {...register('name', nameValidation)}
-        />
-        {errors.name?.message && <Error message={errors.name?.message} />}
-      </div>
+    <div className={styles.wrapper}>
+      <form className={styles.form} onSubmit={submitHandler}>
+        <div className={styles.field}>
+          <input
+            type="text"
+            className={styles.carName}
+            placeholder="Type Car Brand"
+            {...register('name', nameValidation)}
+          />
+        </div>
 
-      <div className={styles.field}>
-        <input
-          type="color"
-          className={styles.colorPicker}
-          {...register('color', colorValidation)}
+        <div className={styles.field}>
+          <input
+            type="color"
+            className={styles.colorPicker}
+            {...register('color', colorValidation)}
+          />
+        </div>
+        <Button
+          label={value ? 'Update' : 'Create'}
+          type="submit"
+          disabled={!isValid || disabled}
+          isLoading={isLoading}
+          loadingLabel={value ? 'Updating...' : 'Creating...'}
         />
-        {errors.color?.message && <Error message={errors.color?.message} />}
-      </div>
-      <Button
-        label={value ? 'Update' : 'Create'}
-        type="submit"
-        disabled={!isValid || disabled}
-        isLoading={isLoading}
-        loadingLabel={value ? 'Updating...' : 'Creating...'}
-      />
-    </form>
+      </form>
+      {errors.name?.message && <Error message={errors.name?.message} />}
+      {errors.color?.message && <Error message={errors.color?.message} />}
+    </div>
   );
 }
 
