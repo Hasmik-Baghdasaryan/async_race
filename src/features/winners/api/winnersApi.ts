@@ -6,7 +6,12 @@ import type {
   UpdateWinnerParams,
   Winner,
 } from '@/features/winners/types';
-import { fetchData, fetchWithHeaders } from '@/lib/httpClient';
+import {
+  fetchData,
+  fetchWithHeaders,
+  HTTP_STATUS,
+  HttpError,
+} from '@/lib/httpClient';
 
 export function getAllWinnersApi({
   page,
@@ -29,8 +34,14 @@ export function getAllWinnersApi({
         try {
           const car = await getCarApi(winner.id);
           return { ...winner, name: car.name, color: car.color };
-        } catch {
-          return winner;
+        } catch (err) {
+          if (
+            err instanceof HttpError &&
+            err.status === HTTP_STATUS.NOT_FOUND
+          ) {
+            return winner;
+          }
+          throw err;
         }
       }),
     );

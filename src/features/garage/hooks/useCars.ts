@@ -1,4 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router';
 
 import { CARS_PER_PAGE } from '@/features/garage/constants';
@@ -25,18 +26,19 @@ export function useCars() {
     itemsPerPage: CARS_PER_PAGE,
   });
 
-  //Pre-fetching
-  if (page < pageCount)
-    queryClient.prefetchQuery({
-      queryKey: ['cars', page + 1],
-      queryFn: () => getAllCarsApi(page + 1, CARS_PER_PAGE),
-    });
+  useEffect(() => {
+    if (page < pageCount)
+      queryClient.prefetchQuery({
+        queryKey: ['cars', page + 1],
+        queryFn: () => getAllCarsApi(page + 1, CARS_PER_PAGE),
+      });
 
-  if (page > 1)
-    queryClient.prefetchQuery({
-      queryKey: ['cars', page - 1],
-      queryFn: () => getAllCarsApi(page - 1, CARS_PER_PAGE),
-    });
+    if (page > 1)
+      queryClient.prefetchQuery({
+        queryKey: ['cars', page - 1],
+        queryFn: () => getAllCarsApi(page - 1, CARS_PER_PAGE),
+      });
+  }, [page, pageCount, queryClient]);
 
   return { isLoading, cars, error, totalCount };
 }

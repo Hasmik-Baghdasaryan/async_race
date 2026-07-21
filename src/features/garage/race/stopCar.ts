@@ -28,14 +28,11 @@ export async function stopCar({
   await dispatch(stopEngine(carId));
 
   if (carRef.current && animationRef.current) {
-    const currentTransform = carRef.current.style.transform;
+    const currentTransform = getComputedStyle(carRef.current).transform;
 
     animationRef.current.effect = new KeyframeEffect(
       carRef.current,
-      [
-        { transform: currentTransform || 'translateX(0px)' },
-        { transform: 'translateX(0px)' },
-      ],
+      [{ transform: currentTransform }, { transform: 'translateX(0px)' }],
       { duration: RESET_ANIMATION_DURATION_MS },
     );
     animationRef.current.play();

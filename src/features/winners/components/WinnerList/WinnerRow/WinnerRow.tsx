@@ -20,7 +20,7 @@ function WinnerRow({ winner, index, page }: WinnerRowProps) {
       <td className={styles.column}>
         <CarIcon color={winner.color} width="40" height="40" />
       </td>
-      <td className={styles.column}>{winner.name}</td>
+      <td className={styles.column}>{winner.name ?? 'Unknown'}</td>
       <td className={styles.column}>{winner.wins}</td>
       <td className={styles.column}>
         {Number.isFinite(winner.time)

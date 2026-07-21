@@ -27,10 +27,11 @@ export function useCarFormLogic(props: CarFormProps) {
   );
 
   const defaultValues = value ? (editedDraft ?? value) : createdDraft;
-  const { register, handleSubmit, formState, reset, getValues } = useForm({
-    mode: 'onChange',
-    defaultValues,
-  });
+  const { register, handleSubmit, formState, reset, getValues, setError } =
+    useForm({
+      mode: 'onChange',
+      defaultValues,
+    });
 
   useEffect(() => {
     return () => {
@@ -45,7 +46,12 @@ export function useCarFormLogic(props: CarFormProps) {
   }, []);
 
   const onFormSubmit = (data: CarCreateParams) => {
-    onSubmit(data);
+    const name = data.name.trim();
+    if (!name) {
+      setError('name', { message: 'Car name cannot be blank' });
+      return;
+    }
+    onSubmit({ ...data, name });
     reset(EMPTY_FORM);
     if (!value) dispatch(updateCarForm(EMPTY_FORM));
   };
