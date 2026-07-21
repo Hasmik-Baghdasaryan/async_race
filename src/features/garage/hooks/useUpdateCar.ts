@@ -7,6 +7,8 @@ import { useAppDispatch } from '@/store/hooks';
 
 import { updateCarApi } from '../api/garageApi';
 
+const CAR_UPDATE_TOAST_ID = 'car-update';
+
 export function useUpdateCar() {
   const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
@@ -14,8 +16,10 @@ export function useUpdateCar() {
   const { mutate: updateCar, isPending: isUpdating } = useMutation({
     mutationFn: ({ id, body }: { id: number; body: CarUpdateParams }) =>
       updateCarApi(id, body),
-    onSuccess: () => {
-      toast.success('Car has been successfully updated');
+    onSuccess: (_data, { body }) => {
+      toast.success(`${body.name} has been successfully updated`, {
+        id: CAR_UPDATE_TOAST_ID,
+      });
       queryClient.invalidateQueries({
         queryKey: ['cars'],
       });
